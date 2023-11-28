@@ -19,7 +19,7 @@
                 <span class="fw-bold">Location:</span> {{event.location}}
             </p>
             <small>user registered {{event.registered_user}}</small><br>
-            <a href="{% url "register_event" event.id %}" class="btn btn-primary fw-bold">Register</a>
+            <a href="{% url "unregister" event.id %}" class="btn btn-primary fw-bold">Unregister</a>
           </div>
         </div>
       </div>
