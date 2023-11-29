@@ -30,11 +30,12 @@ def profile(request):
 def unregister(request,id):
     get_event=event.objects.get(id=id)
     get_event.registered_user-=1
-    get_registration=event_registration.objects.get(events=get_event)
+    get_registration=event_registration.objects.get(events=get_event,user=request.user)
     if get_registration.user == request.user:
         get_registration.user = None
         get_registration.save()
     get_event.save()
-    events=event_registration.objects.exclude(events=get_event)
-    return render(request, 'profile.html',{'registers':events})
+    return redirect('homepage')
+    # events=event_registration.objects.exclude(events=get_event)
+    # return render(request, 'profile.html',{'registers':events})
     

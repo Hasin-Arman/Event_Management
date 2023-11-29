@@ -5,6 +5,7 @@
     <div class="col-md-4 ">
         <div class="card">
           <div class="card-body lh-sm">
+            <h6>Available slot: 10</h6>
             <h5 class="card-title fs-2 text-success">{{event.title}}</h5>
             <p class="card-text">
               <span class="fw-bold">Description:</span> {{event.description}}
@@ -19,7 +20,11 @@
                 <span class="fw-bold">Location:</span> {{event.location}}
             </p>
             <p class="fw-bold">Number of user registered {{event.registered_user}}</p>
+            {% if event.registered_user < 10 %}
             <a href="{% url "register_event" event.id %}" class="btn btn-primary fw-bold">Register</a>
+            {% else %}
+            <p class="fw-bold text-danger">Sorry!!! Slots are full.</p>
+            {% endif %}
           </div>
         </div>
       </div>
