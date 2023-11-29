@@ -4,6 +4,7 @@ from rest_framework.routers import DefaultRouter
 
 router=DefaultRouter()
 router.register(r'events', views.EventViewset,basename='event')
+router.register(r'registrations', views.RegistrationViewset,basename='registration')
 
 urlpatterns = [
     path('api/',include(router.urls)),

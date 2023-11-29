@@ -5,7 +5,8 @@ from .forms import registrationForm
 from django.contrib.auth.decorators import login_required
 from .models import event,event_registration
 from rest_framework import viewsets
-from .serializers import EventSerializer
+from .serializers import EventSerializer,RegistrationSerializer
+from rest_framework.permissions import IsAuthenticated
 # Create your views here.
 
 @login_required(login_url = '/login/')
@@ -38,9 +39,16 @@ def unregister(request,id):
         get_registration.save()
     get_event.save()
     return redirect('homepage')
-    # events=event_registration.objects.exclude(events=get_event)
-    # return render(request, 'profile.html',{'registers':events})
 
 class EventViewset(viewsets.ModelViewSet):
     queryset=event.objects.all()
     serializer_class=EventSerializer
+    
+class RegistrationViewset(viewsets.ModelViewSet):
+    serializer_class=RegistrationSerializer
+    permission_classes=[IsAuthenticated]
+    
+    def get_queryset(self):
+        queryset = event_registration.objects.filter(user=self.request.user)
+        return queryset
+    
