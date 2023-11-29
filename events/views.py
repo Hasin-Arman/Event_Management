@@ -4,6 +4,8 @@ from django.views.generic.edit import FormView
 from .forms import registrationForm
 from django.contrib.auth.decorators import login_required
 from .models import event,event_registration
+from rest_framework import viewsets
+from .serializers import EventSerializer
 # Create your views here.
 
 @login_required(login_url = '/login/')
@@ -38,4 +40,7 @@ def unregister(request,id):
     return redirect('homepage')
     # events=event_registration.objects.exclude(events=get_event)
     # return render(request, 'profile.html',{'registers':events})
-    
+
+class EventViewset(viewsets.ModelViewSet):
+    queryset=event.objects.all()
+    serializer_class=EventSerializer
