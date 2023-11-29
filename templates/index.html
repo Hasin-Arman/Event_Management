@@ -18,7 +18,7 @@
             <p class="card-text">
                 <span class="fw-bold">Location:</span> {{event.location}}
             </p>
-            <small>user registered {{event.registered_user}}</small><br>
+            <p class="fw-bold">Number of user registered {{event.registered_user}}</p>
             <a href="{% url "register_event" event.id %}" class="btn btn-primary fw-bold">Register</a>
           </div>
         </div>

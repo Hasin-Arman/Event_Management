@@ -9,7 +9,7 @@ def user_register(request):
         if form.is_valid():
             user=form.save()
             login(request, user)
-            return redirect('registerpage')
+            return redirect('profile')
     return render(request, 'register.html', {'form':form})
 
 def user_login(request):
@@ -17,12 +17,15 @@ def user_login(request):
         username=request.POST.get('username')
         password=request.POST.get('password')
         user=authenticate(username=username, password=password)
-        login(request, user)
-        return redirect('registerpage')
+        if user:
+            login(request, user)
+            return redirect('profile')
+        else:
+            return render(request, 'signin.html',{'error': 'Invalid username or password'})
     return render(request, 'signin.html')
 
 def user_logout(request):
     if request.user.is_authenticated:
         logout(request)
-        return redirect('loginpage')
+        return redirect('homepage')
     
