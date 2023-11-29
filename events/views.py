@@ -7,6 +7,10 @@ from .models import event,event_registration
 from rest_framework import viewsets
 from .serializers import EventSerializer,RegistrationSerializer
 from rest_framework.permissions import IsAuthenticated
+from django.http import Http404
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
 # Create your views here.
 
 @login_required(login_url = '/login/')
@@ -40,9 +44,27 @@ def unregister(request,id):
     get_event.save()
     return redirect('homepage')
 
-class EventViewset(viewsets.ModelViewSet):
-    queryset=event.objects.all()
-    serializer_class=EventSerializer
+# class EventViewset(viewsets.ModelViewSet):
+#     queryset=event.objects.all()
+#     serializer_class=EventSerializer
+
+class SingleEventView(APIView):
+    def get_object(self, pk):
+        try:
+            return event.objects.get(pk=pk)
+        except event.DoesNotExist:
+            raise Http404
+    
+    def get(self, request, pk, format=None):
+        snippet = self.get_object(pk)
+        serializer = EventSerializer(snippet)
+        return Response(serializer.data)
+
+class AllEventsView(APIView):
+     def get(self, request, format=None):
+        snippets = event.objects.all()
+        serializer = EventSerializer(snippets, many=True)
+        return Response(serializer.data)
     
 class RegistrationViewset(viewsets.ModelViewSet):
     serializer_class=RegistrationSerializer
